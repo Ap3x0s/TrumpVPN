@@ -1,0 +1,8 @@
+.superpowers/
+node_modules/
+dist/
+.env
+*.db
+
+# reference clone (study only)
+_reference/
