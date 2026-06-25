@@ -4,5 +4,10 @@ dist/
 .env
 *.db
 
+# python
+.venv/
+__pycache__/
+*.pyc
+
 # reference clone (study only)
 _reference/
