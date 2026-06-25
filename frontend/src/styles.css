@@ -47,7 +47,18 @@ body::before {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius);
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
+
+/* interactive glass elements (cards that respond) */
+.glass.interactive { cursor: pointer; }
+.glass.interactive:hover {
+  background: var(--glass-bg-hover);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 40px rgba(139, 155, 255, 0.18), var(--shadow);
+  transform: translateY(-2px);
+}
+.glass.interactive:active { transform: translateY(0); }
 
 .gradient-text {
   background: linear-gradient(90deg, var(--accent-1), var(--accent-2) 60%, var(--accent-3));
@@ -61,7 +72,48 @@ body::before {
 .muted { color: var(--muted); }
 .dim { color: var(--dim); }
 
-button { font-family: inherit; cursor: pointer; }
-a { color: inherit; text-decoration: none; }
+button {
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+button:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(165, 180, 252, 0.6);
+}
+
+a { color: inherit; text-decoration: none; transition: color .15s ease; }
+a:hover { color: var(--text); }
+
+/* focus ring for keyboard nav on nav links */
+nav a:focus-visible,
+nav button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px rgba(165, 180, 252, 0.6);
+  border-radius: 8px;
+}
+
+/* text nav links (Тарифы, Как это работает) */
+.nav-link {
+  border-radius: 8px;
+  transition: color .15s ease, background .15s ease;
+}
+.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* generic inputs */
+input.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  border-radius: 11px;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+input.glass::placeholder { color: var(--dim); }
+input.glass:hover { border-color: rgba(255, 255, 255, 0.22); }
+input.glass:focus {
+  outline: none;
+  border-color: rgba(165, 180, 252, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(165, 180, 252, 0.18);
+}
 
 @keyframes spin { to { transform: rotate(360deg); } }

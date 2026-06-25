@@ -16,13 +16,18 @@ export function Landing() {
     api.get<Plan[]>("/api/plans").then(setPlans);
   }, []);
 
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div className="container" style={{ paddingBottom: 80 }}>
       <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 0" }}>
         <Logo />
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <a className="muted" style={{ fontSize: 14, padding: "6px 14px" }} href="#plans">Тарифы</a>
-          <a className="muted" style={{ fontSize: 14, padding: "6px 14px" }} href="#how">Как это работает</a>
+        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+          <button type="button" className="muted nav-link" style={{ fontSize: 14, padding: "6px 14px", background: "transparent", border: "none" }} onClick={() => scrollTo("plans")}>Тарифы</button>
+          <button type="button" className="muted nav-link" style={{ fontSize: 14, padding: "6px 14px", background: "transparent", border: "none" }} onClick={() => scrollTo("how")}>Как это работает</button>
           <Link to={ROUTES.login}><Button variant="ghost">Войти</Button></Link>
         </div>
       </nav>
@@ -51,7 +56,7 @@ export function Landing() {
           {plans.map((p) => {
             const hot = p.discount_percent >= 30;
             return (
-              <div key={p.id} className="glass" style={{ padding: 24, borderColor: hot ? "rgba(139,155,255,0.4)" : undefined, background: hot ? "rgba(139,155,255,0.10)" : undefined }}>
+              <div key={p.id} className="glass interactive" style={{ padding: 24, borderColor: hot ? "rgba(139,155,255,0.4)" : undefined, background: hot ? "rgba(139,155,255,0.10)" : undefined }}>
                 {hot && <div style={{ fontSize: 11, color: "#a5b4fc", fontWeight: 700, marginBottom: 8 }}>ВЫГОДНО</div>}
                 <div style={{ fontSize: 15, fontWeight: 600 }}>{p.title}</div>
                 <div style={{ fontSize: 30, fontWeight: 700, margin: "10px 0" }}>{p.price_rub} ₽</div>
