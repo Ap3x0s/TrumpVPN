@@ -107,6 +107,8 @@
 ### promo_codes / promo_redemptions
 Переносятся как есть из старого проекта. `kind` (discount), `value_int`, `max_uses_total/per_user`, `starts_at/ends_at`, `enabled`.
 
+**Семантика промокода (уточнено по старому коду):** промокод задаёт **процент скидки** (`value_int` = 1–95). При создании счёта: `payable_rub = max(1, round(amount_rub * (100 - percent) / 100))`. `kind = "topup_discount_percent"`. Один промокод привязывается к счёту (`promo_code_text` + `promo_discount_percent`), redeem-запись создаётся после успешной оплаты.
+
 ---
 
 ## 3. Backend API (FastAPI)
