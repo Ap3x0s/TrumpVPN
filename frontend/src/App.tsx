@@ -1,21 +1,23 @@
-import { GlassCard } from "./components/GlassCard";
-import { Button } from "./components/Button";
-import { Logo } from "./components/Logo";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Landing } from "./pages/Landing";
+import { Login } from "./pages/Login";
+import { Checkout } from "./pages/Checkout";
+import { Pay } from "./pages/Pay";
+import { Cabinet } from "./pages/Cabinet";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { ROUTES } from "./lib/routes";
 
-function App() {
+export default function App() {
   return (
-    <div className="container" style={{ display: "flex", justifyContent: "center", paddingTop: 80 }}>
-      <GlassCard style={{ width: 380, textAlign: "center" }}>
-        <Logo />
-        <h1 style={{ fontSize: 24, margin: "16px 0 6px", fontWeight: 700 }}>
-          TrumpVPN <span className="gradient-text">design system</span>
-        </h1>
-        <p className="muted" style={{ fontSize: 14, marginBottom: 20 }}>Frosted glass scaffold ready. Routes land in the next task.</p>
-        <Button>Primary</Button>{" "}
-        <Button variant="ghost">Ghost</Button>
-      </GlassCard>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path={ROUTES.landing} element={<Landing />} />
+        <Route path={ROUTES.login} element={<Login />} />
+        <Route path="/checkout/:planId" element={<Checkout />} />
+        <Route path="/pay/:invoiceId" element={<Pay />} />
+        <Route path={ROUTES.cabinet} element={<ProtectedRoute><Cabinet /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to={ROUTES.landing} replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
