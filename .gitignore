@@ -11,3 +11,9 @@ __pycache__/
 
 # reference clone (study only)
 _reference/
+
+# local dev scripts
+dev.bat
+
+# AI-agent dev docs (plans, specs)
+docs/superpowers/
