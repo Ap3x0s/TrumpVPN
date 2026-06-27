@@ -1,32 +1,29 @@
-// Loads Telegram Login Widget script and renders the button into a container.
+// Renders the Telegram Login Widget into a container element.
 //
-// IMPORTANT ORDER: Telegram's widget scans the DOM for an element with
-// `data-telegram-login` *when the script executes*. So we must set all
-// attributes on the container FIRST, then inject the (synchronous) script
-// tag right after it. Using async + setting attributes after inject is a
-// race the widget reliably loses (no button renders).
+// HOW THE WIDGET ACTUALLY WORKS: Telegram's widget script reads the
+// `data-telegram-login` (bot username) and other `data-*` attributes from
+// the <script> TAG ITSELF, then replaces that script with a button iframe.
+// So all attributes must be on the <script>, not on a wrapper div.
+//
+// data-onauth points to a global function name; we expose it on window.
 export function loadTelegramWidget(containerId: string, botUsername: string, onAuth: (user: unknown) => void) {
   const el = document.getElementById(containerId);
   if (!el) return;
 
-  // 1) global callback used by data-onauth="telegramLogin(user)"
+  // global callback invoked by the widget as data-onauth="telegramLogin(user)"
   (window as unknown as { telegramLogin?: (user: unknown) => void }).telegramLogin = (user: unknown) => onAuth(user);
 
-  // 2) prepare the container with all data- attributes BEFORE the script runs
+  // wipe any previous widget (re-renders / StrictMode double-invoke)
   el.innerHTML = "";
-  el.setAttribute("data-telegram-login", botUsername);
-  el.setAttribute("data-size", "large");
-  el.setAttribute("data-radius", "10");
-  el.setAttribute("data-onauth", "telegramLogin(user)");
-  el.setAttribute("data-request-access", "write");
 
-  // 3) inject the script synchronously right after the container so it runs
-  //    after the attributes above are in the DOM. Avoid re-injecting on re-render.
-  const already = document.getElementById("tg-widget-script");
-  if (already) already.remove();
+  // all attributes go on the <script> tag itself
   const s = document.createElement("script");
-  s.id = "tg-widget-script";
-  s.async = false;
+  s.async = true;
   s.src = "https://telegram.org/js/telegram-widget.js?22";
+  s.setAttribute("data-telegram-login", botUsername);
+  s.setAttribute("data-size", "large");
+  s.setAttribute("data-radius", "10");
+  s.setAttribute("data-onauth", "telegramLogin(user)");
+  s.setAttribute("data-request-access", "write");
   el.appendChild(s);
 }
