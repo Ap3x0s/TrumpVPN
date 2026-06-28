@@ -135,3 +135,21 @@ class PromoRedemption(Base):
     kind: Mapped[str] = mapped_column(String(32))
     value_int: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now, index=True)
+
+
+class LoginToken(Base):
+    """One-time, short-lived magic-link token issued by the bot for website login.
+
+    Issued when a user messages the bot /start. Exchanged at /api/auth/exchange
+    for a JWT session cookie, then marked used_at (single-use). Bound to a
+    telegram_id so the website knows who is logging in.
+    """
+    __tablename__ = "login_tokens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    token: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    telegram_id: Mapped[int] = mapped_column(Integer, index=True)
+    username: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime)
+    used_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now, index=True)

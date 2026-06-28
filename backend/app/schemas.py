@@ -55,3 +55,12 @@ class PaymentStatusOut(BaseModel):
 
 class RedeemPromoRequest(BaseModel):
     code: str = Field(min_length=2, max_length=64)
+
+
+class IssueTokenRequest(BaseModel):
+    telegram_id: int
+    username: str | None = None
+
+
+class ExchangeTokenRequest(BaseModel):
+    token: str = Field(min_length=10, max_length=128)

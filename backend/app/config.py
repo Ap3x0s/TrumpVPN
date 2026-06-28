@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     session_cookie_name: str = "trumpvpn_session"
     session_ttl_seconds: int = 7 * 24 * 3600
 
+    # Shared secret that authorizes the login bot to mint magic-link tokens.
+    # Must match BOT_AUTH_TOKEN set in the bot's environment.
+    login_bot_token: str = ""
+
     database_url: str = "sqlite:///./trumpvpn.db"
 
     @property
