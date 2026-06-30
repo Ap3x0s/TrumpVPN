@@ -39,7 +39,7 @@ async def _issue_token(telegram_id: int, username: str | None) -> str | None:
         params["username"] = username
     headers = {"X-Bot-Token": BOT_AUTH_TOKEN}
     try:
-        r = await httpx.AsyncClient().get(
+        r = await httpx.AsyncClient().post(
             f"{BACKEND_URL}/api/auth/issue-token",
             params=params,
             headers=headers,

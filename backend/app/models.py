@@ -7,8 +7,10 @@ from app.db.base import Base
 
 
 def utc_now() -> datetime:
+    """Naive UTC datetime. SQLite drops tzinfo on store, so naive is the only
+    consistent choice — tz-aware datetimes break comparisons on read-back."""
     from datetime import timezone
-    return datetime.now(timezone.utc)
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class User(Base):

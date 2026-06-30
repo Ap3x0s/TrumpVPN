@@ -53,6 +53,9 @@ def issue_login_token(request: Request, db: Session = Depends(get_db)) -> dict:
 
     Requires a shared secret (X-Bot-Token header) matching LOGIN_BOT_TOKEN.
     Returns a one-time magic-link token bound to the telegram_id.
+
+    Accepts telegram_id/username as query params so the bot can call it with a
+    plain GET-style POST (no JSON body needed).
     """
     expected = getattr(settings, "login_bot_token", "") or ""
     if not expected or request.headers.get(_BOT_AUTH_HEADER, "") != expected:
