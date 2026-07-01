@@ -5,6 +5,7 @@ import { ROUTES } from "../lib/routes";
 import { Button } from "../components/Button";
 import { FAQ } from "../components/FAQ";
 import { Logo } from "../components/Logo";
+import { NavUser } from "../components/NavUser";
 
 type PubConfig = { features: { icon: string; title: string; text: string }[]; metrics: Record<string, string>; faq: { q: string; a: string }[] };
 
@@ -28,7 +29,7 @@ export function Landing() {
         <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
           <button type="button" className="muted nav-link" style={{ fontSize: 14, padding: "6px 14px", background: "transparent", border: "none" }} onClick={() => scrollTo("plans")}>Тарифы</button>
           <button type="button" className="muted nav-link" style={{ fontSize: 14, padding: "6px 14px", background: "transparent", border: "none" }} onClick={() => scrollTo("how")}>Как это работает</button>
-          <Link to={ROUTES.login}><Button variant="ghost">Войти</Button></Link>
+          <NavUser />
         </div>
       </nav>
 

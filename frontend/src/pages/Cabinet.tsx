@@ -41,13 +41,10 @@ export function Cabinet() {
 
   return (
     <div className="container" style={{ paddingBottom: 80 }}>
-      {/* NAV: clickable logo -> home, plus home + logout */}
+      {/* NAV: clickable logo -> home, logout */}
       <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 0" }}>
         <Link to={ROUTES.landing} style={{ display: "flex", alignItems: "center" }}><Logo /></Link>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <Link to={ROUTES.landing}><Button variant="ghost">На главную</Button></Link>
-          <Button variant="ghost" onClick={logout}>Выйти</Button>
-        </div>
+        <Button variant="ghost" onClick={logout}>Выйти</Button>
       </nav>
 
       <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.5px", marginBottom: 18 }}>
