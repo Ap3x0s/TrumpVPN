@@ -7,7 +7,21 @@ import { FAQ } from "../components/FAQ";
 import { Logo } from "../components/Logo";
 import { NavUser } from "../components/NavUser";
 
-type PubConfig = { features: { icon: string; title: string; text: string }[]; metrics: Record<string, string>; faq: { q: string; a: string }[] };
+type Country = { code: string; name: string };
+type Device = { icon: string; title: string; text: string };
+type PubConfig = {
+  features: { icon: string; title: string; text: string }[];
+  metrics: Record<string, string>;
+  countries: Country[];
+  apps: string[];
+  devices: Device[];
+  faq: { q: string; a: string }[];
+};
+
+// Emoji flags for country codes (NL/PL/FI/DE).
+function flag(code: string): string {
+  return code.toUpperCase().replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+}
 
 export function Landing() {
   const [cfg, setCfg] = useState<PubConfig | null>(null);
@@ -33,10 +47,11 @@ export function Landing() {
         </div>
       </nav>
 
+      {/* HERO */}
       <section style={{ textAlign: "center", padding: "40px 0 20px" }}>
         <div className="glass" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 14px", borderRadius: 999, fontSize: 12 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px #34d399" }} />
-          <span className="muted">0 логов · Reality + Hysteria2</span>
+          <span className="muted">0 логов · VLESS Reality</span>
         </div>
         <h1 style={{ fontSize: 44, fontWeight: 700, letterSpacing: "-1px", lineHeight: 1.1, margin: "16px 0 12px" }}>
           VPN, который <span className="gradient-text">просто работает</span>
@@ -52,7 +67,24 @@ export function Landing() {
         </div>
       </section>
 
+      {/* APPS STRIP — marquee of supported services */}
+      {cfg?.apps && (
+        <section style={{ padding: "30px 0 10px", overflow: "hidden" }}>
+          <p className="dim" style={{ textAlign: "center", fontSize: 13, marginBottom: 18 }}>Доступ ко всем заблокированным сервисам</p>
+          <div className="apps-marquee">
+            <div className="apps-track">
+              {[...cfg.apps, ...cfg.apps].map((app, i) => (
+                <span key={i} className="app-chip">{app}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* PLANS */}
       <section id="plans" style={{ padding: "30px 0" }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, textAlign: "center", marginBottom: 6 }}>Тарифы</h2>
+        <p className="dim" style={{ textAlign: "center", marginBottom: 22, fontSize: 14 }}>Оплата криптой. Ключ выдаётся мгновенно после оплаты.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
           {plans.map((p) => {
             const hot = p.discount_percent >= 30;
@@ -69,6 +101,24 @@ export function Landing() {
         </div>
       </section>
 
+      {/* COUNTRIES */}
+      {cfg?.countries && (
+        <section style={{ padding: "20px 0 40px" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, textAlign: "center", marginBottom: 6 }}>Наши локации</h2>
+          <p className="dim" style={{ textAlign: "center", marginBottom: 22, fontSize: 14 }}>Все серверы на VLESS Reality · 1 Гбит на человека</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 14 }}>
+            {cfg.countries.map((c) => (
+              <div key={c.code} className="glass" style={{ padding: 22, textAlign: "center" }}>
+                <div style={{ fontSize: 40, marginBottom: 8, lineHeight: 1 }}>{flag(c.code)}</div>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>{c.name}</div>
+                <div className="dim" style={{ fontSize: 12, marginTop: 4 }}>Reality · 1 Гбит</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* HOW IT WORKS */}
       <section id="how" style={{ padding: "20px 0 40px" }}>
         <h2 style={{ fontSize: 22, fontWeight: 700, textAlign: "center", marginBottom: 6 }}>От оплаты до подключения</h2>
         <p className="dim" style={{ textAlign: "center", marginBottom: 22, fontSize: 14 }}>Как ключ попадает в ваше приложение</p>
@@ -87,9 +137,35 @@ export function Landing() {
         </div>
       </section>
 
+      {/* DEVICES */}
+      {cfg?.devices && (
+        <section style={{ padding: "20px 0 40px" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, textAlign: "center", marginBottom: 6 }}>Для любого устройства</h2>
+          <p className="dim" style={{ textAlign: "center", marginBottom: 22, fontSize: 14 }}>Один ключ — ставьте куда угодно, без ограничений</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14 }}>
+            {cfg.devices.map((d) => (
+              <div key={d.title} className="glass" style={{ padding: 20 }}>
+                <div style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 700, marginBottom: 6 }}>{d.title}</div>
+                <p className="muted" style={{ fontSize: 13, lineHeight: 1.5 }}>{d.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* FAQ */}
       <section style={{ padding: "10px 0 40px" }}>
         <h2 style={{ fontSize: 22, fontWeight: 700, textAlign: "center", marginBottom: 20 }}>Частые вопросы</h2>
         {cfg && <FAQ items={cfg.faq} />}
+      </section>
+
+      {/* CTA FOOTER */}
+      <section style={{ textAlign: "center", padding: "20px 0 0" }}>
+        <div className="glass" style={{ padding: 32, maxWidth: 480, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Готовы начать?</h2>
+          <p className="muted" style={{ fontSize: 14, marginBottom: 20 }}>Подключение за 30 секунд. Безлимитный доступ к любому контенту.</p>
+          <Link to={ROUTES.cabinet}><Button>Получить ключ →</Button></Link>
+        </div>
       </section>
     </div>
   );
