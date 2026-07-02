@@ -20,6 +20,8 @@ app.include_router(api_router)
 @app.on_event("startup")
 def _startup() -> None:
     init_db()
+    from app.db.init_db import seed_dev
+    seed_dev()
 
 
 @app.get("/health")

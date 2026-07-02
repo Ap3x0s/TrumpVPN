@@ -36,6 +36,7 @@ class VpnServer(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    country_code: Mapped[str] = mapped_column(String(4), default="", index=True)
     protocol: Mapped[str] = mapped_column(String(32), default="vless_reality", index=True)
     host: Mapped[str] = mapped_column(String(255))
     port: Mapped[int] = mapped_column(Integer, default=443)
