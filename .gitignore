@@ -2,6 +2,9 @@
 node_modules/
 dist/
 .env
+backend/.env
+bot/.env
+frontend/.env
 *.db
 *.db-wal
 *.db-shm
