@@ -6,6 +6,7 @@ import { Button } from "../components/Button";
 import { FAQ } from "../components/FAQ";
 import { Logo } from "../components/Logo";
 import { NavUser } from "../components/NavUser";
+import { appIcon, deviceIcon } from "../components/icons";
 
 type Country = { code: string; name: string };
 type Device = { icon: string; title: string; text: string };
@@ -74,7 +75,7 @@ export function Landing() {
           <div className="apps-marquee">
             <div className="apps-track">
               {[...cfg.apps, ...cfg.apps].map((app, i) => (
-                <span key={i} className="app-chip">{app}</span>
+                <span key={i} className="app-chip">{appIcon(app)}{app}</span>
               ))}
             </div>
           </div>
@@ -145,7 +146,8 @@ export function Landing() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14 }}>
             {cfg.devices.map((d) => (
               <div key={d.title} className="glass" style={{ padding: 20 }}>
-                <div style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 700, marginBottom: 6 }}>{d.title}</div>
+                <div style={{ color: "#a5b4fc", marginBottom: 10 }}>{deviceIcon(d.icon)}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{d.title}</div>
                 <p className="muted" style={{ fontSize: 13, lineHeight: 1.5 }}>{d.text}</p>
               </div>
             ))}
